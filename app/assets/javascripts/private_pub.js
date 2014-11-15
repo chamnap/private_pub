@@ -12,13 +12,15 @@ function buildPrivatePub(doc) {
         callback(self.fayeClient);
       } else {
         self.fayeCallbacks.push(callback);
-        if (self.subscriptions.server && !self.connecting) {
+        if (!window['Faye'] && self.subscriptions.server && !self.connecting) {
           self.connecting = true;
           var script = doc.createElement("script");
           script.type = "text/javascript";
           script.src = self.subscriptions.server + ".js";
           script.onload = self.connectToFaye;
           doc.documentElement.appendChild(script);
+        } else if (window['Faye']) {
+          self.connectToFaye();
         }
       }
     },
@@ -90,6 +92,15 @@ function buildPrivatePub(doc) {
 
     subscribe: function(channel, callback) {
       self.subscriptionCallbacks[channel] = callback;
+    },
+
+    reset: function() {
+      if (self.fayeClient) {
+        self.fayeClient.disconnect();
+      }
+      self.fayeClient     = null;
+      self.connecting     = false;
+      self.fayeCallbacks  = [];
     }
   };
   return self;

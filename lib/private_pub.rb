@@ -1,3 +1,4 @@
+require "yaml"
 require "digest/sha1"
 require "net/http"
 require "net/https"
