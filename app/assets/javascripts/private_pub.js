@@ -94,7 +94,7 @@ function buildPrivatePub(doc) {
       self.subscriptionCallbacks[channel] = callback;
     },
 
-    reset: function() {
+    disconnect: function() {
       if (self.fayeClient) {
         self.fayeClient.disconnect();
       }
